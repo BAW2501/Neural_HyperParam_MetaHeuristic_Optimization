@@ -3,39 +3,18 @@ from sklearn.datasets import load_breast_cancer
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from mealpy.evolutionary_based import FPA
+import warnings
+warnings.filterwarnings("ignore")
 def decode_solution(solution, data):
-    # batch_size = 2**int(solution[0])
-    # # 1 -> 1.99 ==> 1
-    # # 2 -> 2.99 ==> 2
-    # # 3 -> 3.99 ==> 3
-    #
-    # epoch = 10 * int(solution[1])
-    # # 10 * 70 = 700
-    # # 10 * 200 = 2000
-    #
-    # opt_integer = int(solution[2])
-    # opt = OPT_ENCODER.inverse_transform([opt_integer])[0]
-    # # 0 - 0.99 ==> 0 index ==> should be SGD (for example)
-    # # 1 - 1.99 ==> 1 index ==> should be RMSProp
-    #
-    # learning_rate = solution[3]
-    #
-    # network_weight_initial_integer = int(solution[4])
-    # network_weight_initial = WOI_ENCODER.inverse_transform([network_weight_initial_integer])[0]
-    #
-    # act_integer = int(solution[5])
-    # activation = ACT_ENCODER.inverse_transform([act_integer])[0]
-    #
-    # n_hidden_units = int(solution[6])
 
     batch_size = 2 ** int(solution[0])
     epoch = 10 * int(solution[1])
     opt_integer = int(solution[2])
     opt = data["OPT_ENCODER"].inverse_transform([opt_integer])[0]
     learning_rate = solution[3]
-    act_integer = int(solution[5])
+    act_integer = int(solution[4])
     activation = data["ACT_ENCODER"].inverse_transform([act_integer])[0]
-    n_hidden_units = int(solution[6])
+    n_hidden_units = int(solution[5])
     return {
         "batch_size": batch_size,
         "epoch": epoch,
@@ -67,19 +46,19 @@ def fitness_function(solution, data):
     # 3. return accuracy value
     sol = decode_solution(solution, data)
     acc = generate_accuracy_value(sol, data)
-    print(f"Accuracy: {acc}")
+    print(f"Accuracy: {acc}, Solution: {sol}")
     return acc
     
 
 if __name__ == '__main__':
  # LABEL ENCODER
     OPT_ENCODER = LabelEncoder()
-    OPT_ENCODER.fit(['sgd', 'adam', 'lbfgs'])  # domain range ==> 7 values
+    OPT_ENCODER.fit(['sgd', 'adam', 'lbfgs'])
     ACT_ENCODER = LabelEncoder()
     ACT_ENCODER.fit(['identity', 'logistic', 'tanh', 'relu'])
     
     X, y = load_breast_cancer(return_X_y=True)
-    X_train, X_test, y_train, y_test = train_test_split(X, y)
+    X_train, X_test, y_train, y_test = train_test_split(X, y,random_state=0)
 
     DATA = {
         "X_train": X_train,
@@ -90,8 +69,8 @@ if __name__ == '__main__':
         'ACT_ENCODER': ACT_ENCODER,
     }
 
-    LB = [1, 5, 0, 0.01, 0, 0, 5]
-    UB = [3.99, 20.99, 6.99, 0.5, 7.99, 7.99, 50]
+    LB = [1, 5, 0, 0.01, 0, 5]
+    UB = [3.99, 20.99, 2.99, 0.5, 3.99, 50]
 
     problem = {
         "fit_func": lambda solution: fitness_function(solution, DATA),
@@ -110,5 +89,5 @@ if __name__ == '__main__':
     sol = decode_solution(model.solution[0], DATA)
 
     print(f"Batch-size: {sol['batch_size']}, Epoch: {sol['epoch']}, Opt: {sol['opt']}, "
-          f"Learning-rate: {sol['learning_rate']}, NWI: {sol['network_weight_initial']}, "
+          f"Learning-rate: {sol['learning_rate']}"
           f"Activation: {sol['activation']}, n-hidden: {sol['n_hidden_units']}")
