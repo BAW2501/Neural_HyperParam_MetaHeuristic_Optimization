@@ -1,5 +1,3 @@
-Here is a draft README file for the GitHub repository:
-
 # NeuralNetHyperOpt 
 
 This repository contains Python code for optimizing the hyperparameters of neural networks using metaheuristic search algorithms.
