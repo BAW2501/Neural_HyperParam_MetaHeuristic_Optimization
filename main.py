@@ -81,13 +81,13 @@ if __name__ == '__main__':
         "save_population": False,
         "data": DATA,
     }
-    model = FPA.OriginalFPA(epoch=5, pop_size=20)
+    model = FPA.OriginalFPA(epoch=1, pop_size=20)
     # model = GWO.OriginalGWO(epoch=5, pop_size=20)
-    model.solve(problem)
+    _,acc = model.solve(problem)
 
-    print(f"Best solution: {model.solution[0]}")
+    print(f"Best accuracy:{acc} Best solution: {model.solution[0]}")
     sol = decode_solution(model.solution[0], DATA)
 
     print(f"Batch-size: {sol['batch_size']}, Epoch: {sol['epoch']}, Opt: {sol['opt']}, "
-          f"Learning-rate: {sol['learning_rate']}"
-          f"Activation: {sol['activation']}, n-hidden: {sol['n_hidden_units']}")
+          f"Learning-rate: {sol['learning_rate']} , Activation: {sol['activation']},"
+          f"n-hidden: {sol['n_hidden_units']}")
