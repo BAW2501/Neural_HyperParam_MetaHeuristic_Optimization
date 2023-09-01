@@ -11,6 +11,7 @@ The goal of this project is to automate neural network hyperparameter tuning usi
 ## Requirements
 - Python 3.11+
 - scikit-learn
+- mealpy
 
 ## Contributing
 
