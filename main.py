@@ -6,7 +6,7 @@ from mealpy.evolutionary_based import FPA
 import warnings
 warnings.filterwarnings("ignore")
 def decode_solution(solution, data):
-
+    # decodes solution to get the parameters of MLPClassifier with 1 hidden layer
     batch_size = 2 ** int(solution[0])
     epoch = 10 * int(solution[1])
     opt_integer = int(solution[2])
@@ -21,7 +21,7 @@ def decode_solution(solution, data):
         "opt": opt,
         "learning_rate": learning_rate,
         "activation": activation,
-        "n_hidden_units": n_hidden_units,
+        "n_hidden_units": n_hidden_units, # number neurons in hidden layer
     }
     
 def generate_accuracy_value(structure, data):
@@ -68,7 +68,7 @@ if __name__ == '__main__':
         'OPT_ENCODER': OPT_ENCODER,
         'ACT_ENCODER': ACT_ENCODER,
     }
-
+    # [batch_size, epoch, opt, learning_rate, activation, n_hidden_units]
     LB = [1, 5, 0, 0.01, 0, 5]
     UB = [3.99, 20.99, 2.99, 0.5, 3.99, 50]
 
