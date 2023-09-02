@@ -2,7 +2,7 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.datasets import load_breast_cancer
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
-from mealpy.evolutionary_based import FPA
+from mealpy.swarm_based.ABC import OriginalABC
 import warnings
 warnings.filterwarnings("ignore")
 def decode_solution(solution, data):
@@ -52,12 +52,12 @@ def fitness_function(solution, data):
 
 if __name__ == '__main__':
     
-    X, y = load_breast_cancer(return_X_y=True)
-    X_train, X_test, y_train, y_test = train_test_split(X, y,random_state=0)
+    x, y = load_breast_cancer(return_X_y=True)
+    x_train, x_test, y_train, y_test = train_test_split(x, y,random_state=0)
 
     DATA = {
-        "X_train": X_train,
-        "X_test": X_test,
+        "X_train": x_train,
+        "X_test": x_test,
         "y_train": y_train,
         "y_test": y_test,
         'OPT_ENCODER': LabelEncoder().fit(['sgd', 'adam', 'lbfgs']), 
@@ -76,7 +76,7 @@ if __name__ == '__main__':
         "save_population": False,
         "data": DATA,
     }
-    model = FPA.OriginalFPA(epoch=1, pop_size=20)
+    model = OriginalABC(epoch=1, pop_size=20)
     # model = GWO.OriginalGWO(epoch=5, pop_size=20)
     _,acc = model.solve(problem)
 
