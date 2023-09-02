@@ -51,11 +51,6 @@ def fitness_function(solution, data):
     
 
 if __name__ == '__main__':
- # LABEL ENCODER
-    OPT_ENCODER = LabelEncoder()
-    OPT_ENCODER.fit(['sgd', 'adam', 'lbfgs'])
-    ACT_ENCODER = LabelEncoder()
-    ACT_ENCODER.fit(['identity', 'logistic', 'tanh', 'relu'])
     
     X, y = load_breast_cancer(return_X_y=True)
     X_train, X_test, y_train, y_test = train_test_split(X, y,random_state=0)
@@ -65,8 +60,8 @@ if __name__ == '__main__':
         "X_test": X_test,
         "y_train": y_train,
         "y_test": y_test,
-        'OPT_ENCODER': OPT_ENCODER,
-        'ACT_ENCODER': ACT_ENCODER,
+        'OPT_ENCODER': LabelEncoder().fit(['sgd', 'adam', 'lbfgs']), 
+        'ACT_ENCODER': LabelEncoder().fit(['identity', 'logistic', 'tanh', 'relu'])
     }
     # [batch_size, epoch, opt, learning_rate, activation, n_hidden_units]
     LB = [1, 5, 0, 0.01, 0, 5]
